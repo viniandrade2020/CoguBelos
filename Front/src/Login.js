@@ -9,7 +9,6 @@ function Login({ onLogin }) {
     onLogin(username, password);
   };
 
-  // Estilos
   const containerStyle = {
     display: 'flex', 
     justifyContent: 'center', 
@@ -25,22 +24,22 @@ function Login({ onLogin }) {
     padding: '20px', 
     border: '1px solid #ccc', 
     borderRadius: '5px',
-    backgroundColor: 'white', // Para fundo branco
-    boxShadow: '0 4px 8px 0 rgba(0,0,0,0.2)' // Adiciona sombra para destacar o formulário
+    backgroundColor: 'white',
+    boxShadow: '0 4px 8px 0 rgba(0,0,0,0.2)'
   };
 
   const formStyle = {
     display: 'flex', 
     flexDirection: 'column', 
-    width: '100%', // Garante que o formulário use toda a largura do container
+    width: '100%',
   };
 
   const inputStyle = {
     padding: '8px', 
     borderRadius: '4px', 
     border: '1px solid #ccc', 
-    margin: '8px 0', // Adiciona espaço vertical
-    width: '95%', // Os inputs preenchem o espaço horizontal disponível
+    margin: '8px 0', 
+    width: '95%',
   };
 
   const buttonStyle = {
@@ -50,8 +49,8 @@ function Login({ onLogin }) {
     backgroundColor: '#007bff', 
     color: 'white', 
     cursor: 'pointer',
-    margin: '8px 0', // Adiciona espaço vertical
-    width: '100%', // Faz o botão preencher o espaço horizontal disponível
+    margin: '8px 0', 
+    width: '100%',
   };
 
   return (

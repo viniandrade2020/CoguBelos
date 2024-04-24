@@ -6,19 +6,22 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const handleLogin = (username, password) => {
-    // Simples verificação de login
     if (username && password) {
       setIsLoggedIn(true);
     }
   };
 
-  return (
-    /*<div className="App">
-      {isLoggedIn ? <Dashboard /> : <Login onLogin={handleLogin} />}
-    </div>*/
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+  };
 
+  return (
     <div className="App">
-      <Dashboard />
+      {isLoggedIn ? (
+        <Dashboard onLogout={handleLogout} />
+      ) : (
+        <Login onLogin={handleLogin} />
+      )}
     </div>
   );
 }
