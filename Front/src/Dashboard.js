@@ -1,12 +1,29 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 function Dashboard({ onLogout }) {
-  const data = [
-    { id: 1, image: "https://via.placeholder.com/100", temperature: "22°C", humidity: "45%", floor: "40%", co2: "800 pm" },
-    { id: 2, image: "https://via.placeholder.com/100", temperature: "25°C", humidity: "40%", floor: "40%", co2: "800 pm" },
-    { id: 3, image: "https://via.placeholder.com/100", temperature: "20°C", humidity: "50%", floor: "40%", co2: "800 pm" },
-    { id: 4, image: "https://via.placeholder.com/100", temperature: "23°C", humidity: "47%", floor: "40%", co2: "800 pm" },
-  ];
+  // Inicializa sensorData como uma lista vazia
+  const [sensorData, setSensorData] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('http://192.168.2.116:3000/sensor-data');
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        // Se a resposta não for um array, transforma em um array
+        setSensorData(Array.isArray(data) ? data : [data]); // Coloca o objeto em um array se não for um array
+      } catch (error) {
+        console.error('There has been a problem with your fetch operation:', error);
+        setSensorData([]); // Configura sensorData como lista vazia em caso de erro
+      }
+    };
+
+    fetchData();
+    const interval = setInterval(fetchData, 1000); // Atualiza a cada 1 segundo
+    return () => clearInterval(interval);
+  }, []);
 
   const dashboardStyle = {
     display: 'grid',
@@ -17,7 +34,7 @@ function Dashboard({ onLogout }) {
     alignContent: 'center',
     minHeight: '100vh',
     backgroundColor: '#f7f7f7',
-    position: 'relative', // Necessário para posicionar o botão absolutamente
+    position: 'relative',
   };
 
   const cardStyle = {
@@ -40,27 +57,23 @@ function Dashboard({ onLogout }) {
 
   const buttonStyle = {
     position: 'absolute',
-    top: '20px', // Posiciona o botão no topo da página
-    right: '20px', // Posiciona o botão no canto direito da página
-    padding: '5px 10px', // Torna o botão menor
+    top: '20px',
+    right: '20px',
+    padding: '5px 10px',
     border: 'none',
     borderRadius: '5px',
     backgroundColor: '#dc3545',
     color: 'white',
     cursor: 'pointer',
-    width: 'auto' // Permite que o botão encolha para se ajustar ao texto
+    width: 'auto'
   };
 
   return (
     <div style={dashboardStyle}>
       <button onClick={onLogout} style={buttonStyle}>Sair</button>
-      {data.map(sensor => (
+      {sensorData.map(sensor => (
         <div key={sensor.id} style={cardStyle}>
-          <img src={sensor.image} alt="Sensor" style={{ marginBottom: '10px' }}/>
-          <p style={textStyle}>Temperatura: {sensor.temperature}</p>
-          <p style={textStyle}>Umidade do ar: {sensor.humidity}</p>
           <p style={textStyle}>Umidade do solo: {sensor.floor}</p>
-          <p style={textStyle}>CO2: {sensor.co2}</p>
         </div>
       ))}
     </div>
